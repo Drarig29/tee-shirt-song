@@ -11,12 +11,8 @@ public:
 	Concept(std::string value) : std::string(value) {}
 
 	operator bool() { return !this->empty(); }
-	Concept operator!() { return *this; }
-
-	Concept operator||(const Concept &other)
-	{
-		return Concept(*this + " or " + other);
-	}
+	Concept operator!() { return Concept("no " + *this); }
+	Concept operator||(const Concept &other) { return Concept(*this + " or " + other); }
 };
 
 class Population
@@ -31,6 +27,15 @@ public:
 
 Concept imagine(Concept possibility)
 {
+	cout << "Imagine ";
+
+	if (possibility == "no heaven" || possibility == "no countries")
+		cout << "there's " << possibility;
+	else
+		cout << possibility;
+
+	cout << endl;
+
 	return Concept();
 }
 
@@ -41,10 +46,12 @@ bool need(Concept concepts)
 
 void imagineAll(std::string something)
 {
+	cout << endl << endl;
 }
 
 void chorus()
 {
+	cout << "Chorus" << endl << endl;
 }
 
 class Reasons
