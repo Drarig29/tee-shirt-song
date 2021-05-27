@@ -57,13 +57,13 @@ class Action
 {
 public:
 	Reasons reasons;
-};
 
-Action operator||(Action left, const Action &right)
-{
-	left.reasons.length += right.reasons.length;
-	return left;
-}
+	Action operator||(const Action &other)
+	{
+		this->reasons.length += other.reasons.length;
+		return *this;
+	}
+};
 
 #define DeclareConcept(name) Concept name(#name)
 
