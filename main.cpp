@@ -3,7 +3,21 @@
 #include <vector>
 
 using namespace std;
-using Concept = bool;
+
+class Concept : public std::string
+{
+public:
+	Concept() : std::string() {}
+	Concept(std::string value) : std::string(value) {}
+
+	operator bool() { return !this->empty(); }
+	Concept operator!() { return *this; }
+
+	Concept operator||(const Concept &other)
+	{
+		return Concept(*this + " or " + other);
+	}
+};
 
 class Population
 {
@@ -15,16 +29,9 @@ public:
 	void reduce(Func f) {}
 };
 
-class String : public std::string
+Concept imagine(Concept possibility)
 {
-public:
-	operator bool() { return !empty(); }
-	String(std::string value) {}
-};
-
-String imagine(Concept possibility)
-{
-	return String("");
+	return Concept();
 }
 
 bool need(Concept concepts)
@@ -58,7 +65,7 @@ Action operator||(Action left, const Action &right)
 	return left;
 }
 
-#define DeclareConcept(name) Concept name = true
+#define DeclareConcept(name) Concept name(#name)
 
 DeclareConcept(heaven);
 DeclareConcept(hell);
