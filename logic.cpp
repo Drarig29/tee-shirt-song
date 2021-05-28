@@ -57,6 +57,7 @@ public:
 	Concept() : std::string() {}
 	Concept(std::string name) : std::string(name) {}
 	Concept(std::string name, Concept *parent) : std::string(name), parent(parent) {}
+	Concept(const Concept&) = default;
 
 	operator bool() { return !this->empty(); }
 
