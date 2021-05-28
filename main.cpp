@@ -66,51 +66,6 @@ public:
 	}
 };
 
-Concept imagine(Concept possibility)
-{
-	std::cout << "\033[33m# Verse " << ++verse_counter << std::endl
-			  << "\033[0mImagine ";
-
-	if (possibility.compare("no heaven") == 0 || possibility.compare("no countries") == 0)
-		std::cout << "there's " << possibility;
-	else
-		std::cout << possibility;
-
-	std::cout << std::endl;
-
-	if (possibility.compare("no possessions") == 0)
-		std::cout << "I wonder if you can" << std::endl;
-
-	return Concept();
-}
-
-bool need(Concept concepts)
-{
-	bool needed = false;
-
-	if (!needed)
-		std::cout << "No need for " << concepts << std::endl;
-
-	return needed;
-}
-
-void imagineAll(std::string action)
-{
-	std::cout << "Imagine all the people" << std::endl
-			  << action << std::endl
-			  << std::endl;
-}
-
-void chorus()
-{
-	std::cout << "\033[33m# Chorus" << std::endl
-			  << "\033[0mYou may say I'm a dreamer" << std::endl
-			  << "But I'm not the only one" << std::endl
-			  << "I hope someday you'll join us" << std::endl
-			  << "And the world will " << (++chorus_counter == 1 ? "be" : "live") << " as one" << std::endl
-			  << std::endl;
-}
-
 class Reasons
 {
 public:
@@ -135,6 +90,51 @@ public:
 	}
 };
 
+Concept imagine(Concept possibility)
+{
+	std::cout << "\033[33m# Verse " << ++verse_counter << std::endl
+			  << "\033[0mImagine ";
+
+	if (possibility.compare("no heaven") == 0 || possibility.compare("no countries") == 0)
+		std::cout << "there's " << possibility;
+	else
+		std::cout << possibility;
+
+	std::cout << std::endl;
+
+	if (possibility.compare("no possessions") == 0)
+		std::cout << "I wonder if you can" << std::endl;
+
+	return Concept();
+}
+
+void imagineAll(std::string action)
+{
+	std::cout << "Imagine all the people" << std::endl
+			  << action << std::endl
+			  << std::endl;
+}
+
+void chorus()
+{
+	std::cout << "\033[33m# Chorus" << std::endl
+			  << "\033[0mYou may say I'm a dreamer" << std::endl
+			  << "But I'm not the only one" << std::endl
+			  << "I hope someday you'll join us" << std::endl
+			  << "And the world will " << (++chorus_counter == 1 ? "be" : "live") << " as one" << std::endl
+			  << std::endl;
+}
+
+bool need(Concept concepts)
+{
+	bool needed = false;
+
+	if (!needed)
+		std::cout << "No need for " << concepts << std::endl;
+
+	return needed;
+}
+
 #define Declare(Type, name) Type name(#name)
 #define DeclareConcept(name) Declare(Concept, name)
 #define DeclarePopulation(name) Declare(Population, name)
@@ -158,7 +158,7 @@ DeclarePopulation(men);
 DeclareAction(kill);
 DeclareAction(die);
 
-int main(int argc, char const *argv[])
+int main()
 {
 	/**
 	 * Guess the song... 😌 😎
