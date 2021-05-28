@@ -2,8 +2,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 class Concept : public std::string
 {
 public:
@@ -17,26 +15,26 @@ public:
 		Concept assigned = value.compare("undefined") == 0 ? !*this : *this;
 
 		if (this->compare("below") == 0)
-			cout << value << " " << assigned << " us" << endl;
+			std::cout << value << " " << assigned << " us" << std::endl;
 
 		if (this->compare("above") == 0)
-			cout << assigned << " us, only " << value << endl;
+			std::cout << assigned << " us, only " << value << std::endl;
 
 		if (this->compare("religion") == 0)
-			cout << "And " << assigned << " too" << endl;
+			std::cout << "And " << assigned << " too" << std::endl;
 
 		return value;
 	}
 
 	Concept operator==(const char *value)
 	{
-		cout << "It's " << value << " if you try" << endl;
+		std::cout << "It's " << value << " if you try" << std::endl;
 		return Concept(value);
 	}
 
 	Concept operator!=(const char *value)
 	{
-		cout << "It isn't " << value << " to do" << endl;
+		std::cout << "It isn't " << value << " to do" << std::endl;
 		return Concept(value);
 	}
 
@@ -53,26 +51,27 @@ public:
 	Population(std::string name) : Concept(name), below("below"), above("above") {}
 
 	template <typename Func>
-	void reduce(Func f) {
+	void reduce(Func f)
+	{
 		Concept symbol = Concept(std::string(f()).compare("brothers") == 0 ? "brotherhood" : "");
 		Concept subject = Concept(this->compare("men") == 0 ? "man" : "");
-		cout << "A " << symbol << " of " << subject << endl;
+		std::cout << "A " << symbol << " of " << subject << std::endl;
 	}
 };
 
 Concept imagine(Concept possibility)
 {
-	cout << "Imagine ";
+	std::cout << "Imagine ";
 
 	if (possibility.compare("no heaven") == 0 || possibility.compare("no countries") == 0)
-		cout << "there's " << possibility;
+		std::cout << "there's " << possibility;
 	else
-		cout << possibility;
+		std::cout << possibility;
 
-	cout << endl;
+	std::cout << std::endl;
 
-	if (possibility.compare("no possessions") == 0) 
-		cout << "I wonder if you can" << endl;
+	if (possibility.compare("no possessions") == 0)
+		std::cout << "I wonder if you can" << std::endl;
 
 	return Concept();
 }
@@ -82,27 +81,27 @@ bool need(Concept concepts)
 	bool needed = false;
 
 	if (!needed)
-		cout << "No need for " << concepts << endl;
+		std::cout << "No need for " << concepts << std::endl;
 
 	return needed;
 }
 
 void imagineAll(std::string action)
 {
-	cout << "Imagine all the people" << endl
-		 << action << endl
-		 << endl;
+	std::cout << "Imagine all the people" << std::endl
+			  << action << std::endl
+			  << std::endl;
 }
 
 int chorus_number = 0;
 
 void chorus()
 {
-	cout << "You may say I'm a dreamer" << endl
-		 << "But I'm not the only one" << endl
-		 << "I hope someday you'll join us" << endl
-		 << "And the world will " << (++chorus_number == 1 ? "be" : "live") << " as one" << endl
-		 << endl;
+	std::cout << "You may say I'm a dreamer" << std::endl
+			  << "But I'm not the only one" << std::endl
+			  << "I hope someday you'll join us" << std::endl
+			  << "And the world will " << (++chorus_number == 1 ? "be" : "live") << " as one" << std::endl
+			  << std::endl;
 }
 
 class Reasons
@@ -122,7 +121,7 @@ public:
 	{
 		if (this->reasons.length + other.reasons.length == 0)
 		{
-			cout << "Nothing to " << *this << " or " << other << " for" << endl;
+			std::cout << "Nothing to " << *this << " or " << other << " for" << std::endl;
 		}
 
 		return *this;
@@ -147,7 +146,6 @@ DeclareConcept(undefined);
 // TODO: make a reference to the population in the concepts, to be able to un-hardcode `us`
 // TODO: same for Action and Reason?
 // TODO: mark verses and chorus
-// TODO: remove using namespace std
 
 DeclarePopulation(us);
 DeclarePopulation(men);
