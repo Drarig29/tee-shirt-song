@@ -6,6 +6,9 @@
 int chorus_counter = 0;
 int verse_counter = 0;
 
+/**
+ * @brief This class holds the current line of the lyrics to uppercase the first letter of it before flushing to the standard output.
+ */
 class Lyrics
 {
 public:
@@ -39,9 +42,15 @@ Lyrics &operator<<(Lyrics &lyrics, int value)
 	return lyrics;
 }
 
+/**
+ * @brief Defines a concept in the song.
+ */
 class Concept : public std::string
 {
 private:
+	/**
+ 	 * @brief The parent of the concept.
+ 	 */
 	Concept *parent;
 
 public:
@@ -86,32 +95,57 @@ public:
 	Concept operator||(const Concept &other) { return Concept(*this + " or " + other); }
 };
 
+/**
+ * @brief Defines a population referenced in the song.
+ */
 class Population : Concept
 {
 public:
+	/**
+	 * @brief A concept below the population.
+	 */
 	Concept below;
+
+	/**
+	 * @brief A concept above the population.
+	 */
 	Concept above;
 
 	Population(std::string name) : Concept(name), below("below", this), above("above", this) {}
 
+	/**
+	 * @brief An operation which is applied to a population.
+	 * 
+	 * @tparam Func
+	 * @param operation
+	 */
 	template <typename Func>
-	void reduce(Func f)
+	void reduce(Func operation)
 	{
-		Concept symbol = Concept(std::string(f()).compare("brothers") == 0 ? "brotherhood" : "");
+		Concept symbol = Concept(std::string(operation()).compare("brothers") == 0 ? "brotherhood" : "");
 		Concept subject = Concept(this->compare("men") == 0 ? "man" : "");
 		lyrics << "A " << symbol << " of " << subject << "\n";
 	}
 };
 
+/**
+ * @brief Defines a list of reasons.
+ */
 class Reasons
 {
 public:
 	int length;
 };
 
+/**
+ * @brief Defines an action in the song.
+ */
 class Action : Concept
 {
 public:
+	/**
+	 * @brief The list of reasons why this action is happening.
+	 */
 	Reasons reasons;
 
 	Action(std::string name) : Concept(name) {}
@@ -119,15 +153,19 @@ public:
 	Action operator||(const Action &other)
 	{
 		if (this->reasons.length + other.reasons.length == 0)
-		{
 			lyrics << "Nothing to " << *this << " or " << other << " for"
 				   << "\n";
-		}
 
 		return *this;
 	}
 };
 
+/**
+ * @brief Start of a verse. Imagine a possibility...
+ * 
+ * @param possibility
+ * @return Concept
+ */
 Concept imagine(Concept possibility)
 {
 	lyrics << "\033[33m# Verse " << ++verse_counter << "\n"
@@ -147,6 +185,11 @@ Concept imagine(Concept possibility)
 	return Concept();
 }
 
+/**
+ * @brief End of a verse. Imagine all the people doing an action...
+ * 
+ * @param action
+ */
 void imagineAll(std::string action)
 {
 	lyrics << "Imagine all the people"
@@ -155,6 +198,9 @@ void imagineAll(std::string action)
 		   << "\n";
 }
 
+/**
+ * @brief The chorus, which comes in two slightly different versions.
+ */
 void chorus()
 {
 	lyrics << "\033[33m# Chorus"
@@ -170,6 +216,12 @@ void chorus()
 		   << "\n";
 }
 
+/**
+ * @brief Do you really need this?
+ * 
+ * @param concepts
+ * @return bool
+ */
 bool need(Concept concepts)
 {
 	bool needed = false;
