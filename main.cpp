@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 
+int chorus_counter = 0;
+int verse_counter = 0;
+
 class Concept : public std::string
 {
 public:
@@ -61,7 +64,8 @@ public:
 
 Concept imagine(Concept possibility)
 {
-	std::cout << "Imagine ";
+	std::cout << "\033[33m# Verse " << ++verse_counter << std::endl
+			  << "\033[0mImagine ";
 
 	if (possibility.compare("no heaven") == 0 || possibility.compare("no countries") == 0)
 		std::cout << "there's " << possibility;
@@ -93,14 +97,13 @@ void imagineAll(std::string action)
 			  << std::endl;
 }
 
-int chorus_number = 0;
-
 void chorus()
 {
-	std::cout << "You may say I'm a dreamer" << std::endl
+	std::cout << "\033[33m# Chorus" << std::endl
+			  << "\033[0mYou may say I'm a dreamer" << std::endl
 			  << "But I'm not the only one" << std::endl
 			  << "I hope someday you'll join us" << std::endl
-			  << "And the world will " << (++chorus_number == 1 ? "be" : "live") << " as one" << std::endl
+			  << "And the world will " << (++chorus_counter == 1 ? "be" : "live") << " as one" << std::endl
 			  << std::endl;
 }
 
@@ -145,7 +148,6 @@ DeclareConcept(undefined);
 
 // TODO: make a reference to the population in the concepts, to be able to un-hardcode `us`
 // TODO: same for Action and Reason?
-// TODO: mark verses and chorus
 
 DeclarePopulation(us);
 DeclarePopulation(men);
