@@ -6,9 +6,9 @@
             "command": "/usr/bin/g++",
             "args": [
                 "-g",
-                "main.cpp",
+                "src/main.cpp",
                 "-o",
-                "build/main"
+                "main"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
