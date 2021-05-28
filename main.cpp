@@ -1,9 +1,43 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
 int chorus_counter = 0;
 int verse_counter = 0;
+
+class Lyrics
+{
+public:
+	friend Lyrics &operator<<(Lyrics &, const std::string &);
+	friend Lyrics &operator<<(Lyrics &, int);
+
+private:
+	std::ostringstream current_line;
+} lyrics;
+
+Lyrics &operator<<(Lyrics &lyrics, const std::string &value)
+{
+	if (value == "\n")
+	{
+		std::string line = lyrics.current_line.str();
+		line[0] = toupper(line[0]);
+
+		// Flush with uppercase first letter.
+		std::cout << line << std::endl;
+		lyrics.current_line = std::ostringstream();
+		return lyrics;
+	}
+
+	lyrics.current_line << value;
+	return lyrics;
+}
+
+Lyrics &operator<<(Lyrics &lyrics, int value)
+{
+	lyrics << std::to_string(value);
+	return lyrics;
+}
 
 class Concept : public std::string
 {
@@ -22,26 +56,29 @@ public:
 		Concept assigned = value.compare("undefined") == 0 ? !*this : *this;
 
 		if (this->compare("below") == 0)
-			std::cout << value << " " << assigned << " " << *parent << std::endl;
+			lyrics << value << " " << assigned << " " << *parent << "\n";
 
 		if (this->compare("above") == 0)
-			std::cout << assigned << " " << *parent << ", only " << value << std::endl;
+			lyrics << assigned << " " << *parent << ", only " << value << "\n";
 
 		if (this->compare("religion") == 0)
-			std::cout << "And " << assigned << " too" << std::endl;
+			lyrics << "And " << assigned << " too"
+				   << "\n";
 
 		return value;
 	}
 
 	Concept operator==(const char *value)
 	{
-		std::cout << "It's " << value << " if you try" << std::endl;
+		lyrics << "It's " << value << " if you try"
+			   << "\n";
 		return Concept(value);
 	}
 
 	Concept operator!=(const char *value)
 	{
-		std::cout << "It isn't " << value << " to do" << std::endl;
+		lyrics << "It isn't " << value << " to do"
+			   << "\n";
 		return Concept(value);
 	}
 
@@ -62,7 +99,7 @@ public:
 	{
 		Concept symbol = Concept(std::string(f()).compare("brothers") == 0 ? "brotherhood" : "");
 		Concept subject = Concept(this->compare("men") == 0 ? "man" : "");
-		std::cout << "A " << symbol << " of " << subject << std::endl;
+		lyrics << "A " << symbol << " of " << subject << "\n";
 	}
 };
 
@@ -83,7 +120,8 @@ public:
 	{
 		if (this->reasons.length + other.reasons.length == 0)
 		{
-			std::cout << "Nothing to " << *this << " or " << other << " for" << std::endl;
+			lyrics << "Nothing to " << *this << " or " << other << " for"
+				   << "\n";
 		}
 
 		return *this;
@@ -92,37 +130,44 @@ public:
 
 Concept imagine(Concept possibility)
 {
-	std::cout << "\033[33m# Verse " << ++verse_counter << std::endl
-			  << "\033[0mImagine ";
+	lyrics << "\033[33m# Verse " << ++verse_counter << "\n"
+		   << "\033[0mImagine ";
 
 	if (possibility.compare("no heaven") == 0 || possibility.compare("no countries") == 0)
-		std::cout << "there's " << possibility;
+		lyrics << "there's " << possibility;
 	else
-		std::cout << possibility;
+		lyrics << possibility;
 
-	std::cout << std::endl;
+	lyrics << "\n";
 
 	if (possibility.compare("no possessions") == 0)
-		std::cout << "I wonder if you can" << std::endl;
+		lyrics << "I wonder if you can"
+			   << "\n";
 
 	return Concept();
 }
 
 void imagineAll(std::string action)
 {
-	std::cout << "Imagine all the people" << std::endl
-			  << action << std::endl
-			  << std::endl;
+	lyrics << "Imagine all the people"
+		   << "\n"
+		   << action << "\n"
+		   << "\n";
 }
 
 void chorus()
 {
-	std::cout << "\033[33m# Chorus" << std::endl
-			  << "\033[0mYou may say I'm a dreamer" << std::endl
-			  << "But I'm not the only one" << std::endl
-			  << "I hope someday you'll join us" << std::endl
-			  << "And the world will " << (++chorus_counter == 1 ? "be" : "live") << " as one" << std::endl
-			  << std::endl;
+	lyrics << "\033[33m# Chorus"
+		   << "\n"
+		   << "\033[0mYou may say I'm a dreamer"
+		   << "\n"
+		   << "But I'm not the only one"
+		   << "\n"
+		   << "I hope someday you'll join us"
+		   << "\n"
+		   << "And the world will " << (++chorus_counter == 1 ? "be" : "live") << " as one"
+		   << "\n"
+		   << "\n";
 }
 
 bool need(Concept concepts)
@@ -130,7 +175,7 @@ bool need(Concept concepts)
 	bool needed = false;
 
 	if (!needed)
-		std::cout << "No need for " << concepts << std::endl;
+		lyrics << "No need for " << concepts << "\n";
 
 	return needed;
 }
@@ -149,8 +194,6 @@ DeclareConcept(possessions);
 DeclareConcept(greed);
 DeclareConcept(hunger);
 DeclareConcept(undefined);
-
-// TODO: accumulate line and capitalize the first letter before flushing
 
 DeclarePopulation(us);
 DeclarePopulation(men);
