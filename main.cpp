@@ -7,9 +7,13 @@ int verse_counter = 0;
 
 class Concept : public std::string
 {
+private:
+	Concept *parent;
+
 public:
 	Concept() : std::string() {}
 	Concept(std::string name) : std::string(name) {}
+	Concept(std::string name, Concept *parent) : std::string(name), parent(parent) {}
 
 	operator bool() { return !this->empty(); }
 
@@ -18,10 +22,10 @@ public:
 		Concept assigned = value.compare("undefined") == 0 ? !*this : *this;
 
 		if (this->compare("below") == 0)
-			std::cout << value << " " << assigned << " us" << std::endl;
+			std::cout << value << " " << assigned << " " << *parent << std::endl;
 
 		if (this->compare("above") == 0)
-			std::cout << assigned << " us, only " << value << std::endl;
+			std::cout << assigned << " " << *parent << ", only " << value << std::endl;
 
 		if (this->compare("religion") == 0)
 			std::cout << "And " << assigned << " too" << std::endl;
@@ -51,7 +55,7 @@ public:
 	Concept below;
 	Concept above;
 
-	Population(std::string name) : Concept(name), below("below"), above("above") {}
+	Population(std::string name) : Concept(name), below("below", this), above("above", this) {}
 
 	template <typename Func>
 	void reduce(Func f)
@@ -146,8 +150,7 @@ DeclareConcept(greed);
 DeclareConcept(hunger);
 DeclareConcept(undefined);
 
-// TODO: make a reference to the population in the concepts, to be able to un-hardcode `us`
-// TODO: same for Action and Reason?
+// TODO: accumulate line and capitalize the first letter before flushing
 
 DeclarePopulation(us);
 DeclarePopulation(men);
