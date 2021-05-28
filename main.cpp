@@ -8,7 +8,7 @@ class Concept : public std::string
 {
 public:
 	Concept() : std::string() {}
-	Concept(std::string value) : std::string(value) {}
+	Concept(std::string name) : std::string(name) {}
 
 	operator bool() { return !this->empty(); }
 
@@ -30,17 +30,13 @@ public:
 
 	Concept operator==(const char *value)
 	{
-		if (value == "easy")
-			cout << "It's " << value << " if you try" << endl;
-
+		cout << "It's " << value << " if you try" << endl;
 		return Concept(value);
 	}
 
 	Concept operator!=(const char *value)
 	{
-		if (value == "hard")
-			cout << "It isn't " << value << " to do" << endl;
-
+		cout << "It isn't " << value << " to do" << endl;
 		return Concept(value);
 	}
 
@@ -48,35 +44,47 @@ public:
 	Concept operator||(const Concept &other) { return Concept(*this + " or " + other); }
 };
 
-class Population
+class Population : Concept
 {
 public:
 	Concept below;
 	Concept above;
 
-	Population() : below("below"), above("above") {}
+	Population(std::string name) : Concept(name), below("below"), above("above") {}
 
 	template <typename Func>
-	void reduce(Func f) {}
+	void reduce(Func f) {
+		Concept symbol = Concept(std::string(f()).compare("brothers") == 0 ? "brotherhood" : "");
+		Concept subject = Concept(this->compare("men") == 0 ? "man" : "");
+		cout << "A " << symbol << " of " << subject << endl;
+	}
 };
 
 Concept imagine(Concept possibility)
 {
 	cout << "Imagine ";
 
-	if (possibility == "no heaven" || possibility == "no countries")
+	if (possibility.compare("no heaven") == 0 || possibility.compare("no countries") == 0)
 		cout << "there's " << possibility;
 	else
 		cout << possibility;
 
 	cout << endl;
 
+	if (possibility.compare("no possessions") == 0) 
+		cout << "I wonder if you can" << endl;
+
 	return Concept();
 }
 
 bool need(Concept concepts)
 {
-	return true;
+	bool needed = false;
+
+	if (!needed)
+		cout << "No need for " << concepts << endl;
+
+	return needed;
 }
 
 void imagineAll(std::string action)
@@ -108,7 +116,7 @@ class Action : Concept
 public:
 	Reasons reasons;
 
-	Action(std::string value) : Concept(value) {}
+	Action(std::string name) : Concept(name) {}
 
 	Action operator||(const Action &other)
 	{
@@ -123,6 +131,7 @@ public:
 
 #define Declare(Type, name) Type name(#name)
 #define DeclareConcept(name) Declare(Concept, name)
+#define DeclarePopulation(name) Declare(Population, name)
 #define DeclareAction(name) Declare(Action, name)
 
 DeclareConcept(heaven);
@@ -138,9 +147,10 @@ DeclareConcept(undefined);
 // TODO: make a reference to the population in the concepts, to be able to un-hardcode `us`
 // TODO: same for Action and Reason?
 // TODO: mark verses and chorus
+// TODO: remove using namespace std
 
-Population us;
-Population men;
+DeclarePopulation(us);
+DeclarePopulation(men);
 
 DeclareAction(kill);
 DeclareAction(die);
