@@ -4,7 +4,7 @@ You will also find a [C++ program](src/main.cpp) which runs the song! 😎
 
 The code below is actually implemented and programmatically outputs the lyrics, this is not hardcoded. The logic sits in a [separated file](src/logic.cpp).
 
-![Image to print on your tee-shirt](imagine.png)
+![Demo of the executable](demo.gif)
 
 ## Disclaimer
 
