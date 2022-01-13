@@ -2,6 +2,10 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <thread>
+
+#define sleep(ms) std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 
 int chorus_counter = 0;
 int verse_counter = 0;
@@ -12,10 +16,28 @@ int verse_counter = 0;
 class Lyrics
 {
 public:
+	~Lyrics()
+	{
+		char last;
+
+		for (char& c : output.str()) {
+			std::cout << c << std::flush;
+			
+			if (c == last && last == '\n') {
+				sleep(150);
+			} else {
+				sleep(10);
+			}
+
+			last = c;
+		}
+	}
+
 	friend Lyrics &operator<<(Lyrics &, const std::string &);
 	friend Lyrics &operator<<(Lyrics &, int);
 
 private:
+	std::ostringstream output;
 	std::ostringstream current_line;
 } lyrics;
 
@@ -27,7 +49,7 @@ Lyrics &operator<<(Lyrics &lyrics, const std::string &value)
 		line[0] = toupper(line[0]);
 
 		// Flush with uppercase first letter.
-		std::cout << line << std::endl;
+		lyrics.output << line << std::endl;
 		lyrics.current_line = std::ostringstream();
 		return lyrics;
 	}
@@ -57,7 +79,7 @@ public:
 	Concept() : std::string() {}
 	Concept(std::string name) : std::string(name) {}
 	Concept(std::string name, Concept *parent) : std::string(name), parent(parent) {}
-	Concept(const Concept&) = default;
+	Concept(const Concept &) = default;
 
 	operator bool() { return !this->empty(); }
 
