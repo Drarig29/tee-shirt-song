@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -16,20 +18,33 @@ int verse_counter = 0;
 class Lyrics
 {
 public:
+	Lyrics()
+	{
+		this->output << R"(
+/**
+ * Guess the song... 😌 😎
+ */
+)" << std::endl;
+	}
+
 	~Lyrics()
 	{
 		char last;
 
-		for (char& c : output.str()) {
-			std::cout << c << std::flush;
-			
-			if (c == last && last == '\n') {
+		for (char &current : this->output.str())
+		{
+			std::cout << current << std::flush;
+
+			if (current == last && last == '\n')
+			{
 				sleep(150);
-			} else {
+			}
+			else
+			{
 				sleep(10);
 			}
 
-			last = c;
+			last = current;
 		}
 	}
 
@@ -71,8 +86,8 @@ class Concept : public std::string
 {
 private:
 	/**
- 	 * @brief The parent of the concept.
- 	 */
+	 * @brief The parent of the concept.
+	 */
 	Concept *parent;
 
 public:
@@ -88,10 +103,10 @@ public:
 		Concept assigned = value.compare("undefined") == 0 ? !*this : *this;
 
 		if (this->compare("below") == 0)
-			lyrics << value << " " << assigned << " " << *parent << "\n";
+			lyrics << value << " " << assigned << " " << *this->parent << "\n";
 
 		if (this->compare("above") == 0)
-			lyrics << assigned << " " << *parent << ", only " << value << "\n";
+			lyrics << assigned << " " << *this->parent << ", only " << value << "\n";
 
 		if (this->compare("religion") == 0)
 			lyrics << "And " << assigned << " too"
@@ -138,7 +153,7 @@ public:
 
 	/**
 	 * @brief An operation which is applied to a population.
-	 * 
+	 *
 	 * @tparam Func
 	 * @param operation
 	 */
@@ -185,7 +200,7 @@ public:
 
 /**
  * @brief Start of a verse. Imagine a possibility...
- * 
+ *
  * @param possibility
  * @return Concept
  */
@@ -210,7 +225,7 @@ Concept imagine(Concept possibility)
 
 /**
  * @brief End of a verse. Imagine all the people doing an action...
- * 
+ *
  * @param action
  */
 void imagineAll(std::string action)
@@ -241,7 +256,7 @@ void chorus()
 
 /**
  * @brief Do you really need this?
- * 
+ *
  * @param concepts
  * @return bool
  */
