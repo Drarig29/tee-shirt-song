@@ -3,7 +3,7 @@ CXXFLAGS=-Wall -Werror -Wextra -Wno-unused-value -pedantic -std=c++17 -g
 
 SRC=src/main.cc
 OBJ=$(SRC:.cc=.o)
-EXEC=main
+EXEC=tee-shirt-song
 
 all: $(EXEC)
 
