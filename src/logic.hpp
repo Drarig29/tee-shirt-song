@@ -20,11 +20,13 @@ class Lyrics
 public:
 	Lyrics()
 	{
-		this->output << R"(
+		this->output << "\033[32m"
+					 << R"(
 /**
  * Guess the song... 😌 😎
  */
-)" << std::endl;
+)"
+					 << "\033[0m" << std::endl;
 	}
 
 	~Lyrics()
