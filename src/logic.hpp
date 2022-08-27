@@ -1,11 +1,12 @@
-#pragma once
-
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
 #include <chrono>
 #include <thread>
+
+extern void begin_music();
+extern void end_music();
 
 #define sleep(ms) std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 
@@ -20,6 +21,8 @@ class Lyrics
 public:
 	Lyrics()
 	{
+        begin_music();
+
 		this->output << "\033[32m"
 					 << R"(
 /**
@@ -48,6 +51,10 @@ public:
 
 			last = current;
 		}
+
+        // End music when a key is pressed.
+        std::getchar();
+        end_music();
 	}
 
 	friend Lyrics &operator<<(Lyrics &, const std::string &);
