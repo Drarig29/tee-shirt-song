@@ -16,195 +16,181 @@ int verse_counter = 0;
 /**
  * @brief This class holds the current line of the lyrics to uppercase the first letter of it before flushing to the standard output.
  */
-class Lyrics
-{
+class Lyrics {
 public:
-	Lyrics()
-	{
+    Lyrics() {
         begin_music();
 
-		this->output << "\033[32m"
-					 << R"(
+        this->output << "\033[32m"
+                     << R"(
 /**
  * Guess the song... 😌 😎
  */
 )"
-					 << "\033[0m" << std::endl;
-	}
+                     << "\033[0m" << std::endl;
+    }
 
-	~Lyrics()
-	{
-		char last;
+    ~Lyrics() {
+        char last;
 
-		for (char &current : this->output.str())
-		{
-			std::cout << current << std::flush;
+        for (char &current: this->output.str()) {
+            std::cout << current << std::flush;
 
-			if (current == last && last == '\n')
-			{
-				sleep(150);
-			}
-			else
-			{
-				sleep(10);
-			}
+            if (current == last && last == '\n') {
+                sleep(150);
+            } else {
+                sleep(10);
+            }
 
-			last = current;
-		}
+            last = current;
+        }
 
         // End music when a key is pressed.
         std::getchar();
         end_music();
-	}
+    }
 
-	friend Lyrics &operator<<(Lyrics &, const std::string &);
-	friend Lyrics &operator<<(Lyrics &, int);
+    friend Lyrics &operator<<(Lyrics &, const std::string &);
+
+    friend Lyrics &operator<<(Lyrics &, int);
 
 private:
-	std::ostringstream output;
-	std::ostringstream current_line;
+    std::ostringstream output;
+    std::ostringstream current_line;
 } lyrics;
 
-Lyrics &operator<<(Lyrics &lyrics, const std::string &value)
-{
-	if (value == "\n")
-	{
-		std::string line = lyrics.current_line.str();
-		line[0] = toupper(line[0]);
+Lyrics &operator<<(Lyrics &lyrics, const std::string &value) {
+    if (value == "\n") {
+        std::string line = lyrics.current_line.str();
+        line[0] = toupper(line[0]);
 
-		// Flush with uppercase first letter.
-		lyrics.output << line << std::endl;
-		lyrics.current_line = std::ostringstream();
-		return lyrics;
-	}
+        // Flush with uppercase first letter.
+        lyrics.output << line << std::endl;
+        lyrics.current_line = std::ostringstream();
+        return lyrics;
+    }
 
-	lyrics.current_line << value;
-	return lyrics;
+    lyrics.current_line << value;
+    return lyrics;
 }
 
-Lyrics &operator<<(Lyrics &lyrics, int value)
-{
-	lyrics << std::to_string(value);
-	return lyrics;
+Lyrics &operator<<(Lyrics &lyrics, int value) {
+    lyrics << std::to_string(value);
+    return lyrics;
 }
 
 /**
  * @brief Defines a concept in the song.
  */
-class Concept : public std::string
-{
+class Concept : public std::string {
 private:
-	/**
-	 * @brief The parent of the concept.
-	 */
-	Concept *parent;
+    /**
+     * @brief The parent of the concept.
+     */
+    Concept *parent;
 
 public:
-	Concept() : std::string() {}
-	Concept(std::string name) : std::string(name) {}
-	Concept(std::string name, Concept *parent) : std::string(name), parent(parent) {}
-	Concept(const Concept &) = default;
+    Concept() : std::string() {}
 
-	operator bool() { return !this->empty(); }
+    Concept(std::string name) : std::string(name) {}
 
-	Concept operator=(const Concept &value)
-	{
-		Concept assigned = value.compare("undefined") == 0 ? !*this : *this;
+    Concept(std::string name, Concept *parent) : std::string(name), parent(parent) {}
 
-		if (this->compare("below") == 0)
-			lyrics << value << " " << assigned << " " << *this->parent << "\n";
+    Concept(const Concept &) = default;
 
-		if (this->compare("above") == 0)
-			lyrics << assigned << " " << *this->parent << ", only " << value << "\n";
+    operator bool() { return !this->empty(); }
 
-		if (this->compare("religion") == 0)
-			lyrics << "And " << assigned << " too"
-				   << "\n";
+    Concept operator=(const Concept &value) {
+        Concept assigned = value.compare("undefined") == 0 ? !*this : *this;
 
-		return value;
-	}
+        if (this->compare("below") == 0)
+            lyrics << value << " " << assigned << " " << *this->parent << "\n";
 
-	Concept operator==(const char *value)
-	{
-		lyrics << "It's " << value << " if you try"
-			   << "\n";
-		return Concept(value);
-	}
+        if (this->compare("above") == 0)
+            lyrics << assigned << " " << *this->parent << ", only " << value << "\n";
 
-	Concept operator!=(const char *value)
-	{
-		lyrics << "It isn't " << value << " to do"
-			   << "\n";
-		return Concept(value);
-	}
+        if (this->compare("religion") == 0)
+            lyrics << "And " << assigned << " too"
+                   << "\n";
 
-	Concept operator!() { return Concept("no " + *this); }
-	Concept operator||(const Concept &other) { return Concept(*this + " or " + other); }
+        return value;
+    }
+
+    Concept operator==(const char *value) {
+        lyrics << "It's " << value << " if you try"
+               << "\n";
+        return Concept(value);
+    }
+
+    Concept operator!=(const char *value) {
+        lyrics << "It isn't " << value << " to do"
+               << "\n";
+        return Concept(value);
+    }
+
+    Concept operator!() { return Concept("no " + *this); }
+
+    Concept operator||(const Concept &other) { return Concept(*this + " or " + other); }
 };
 
 /**
  * @brief Defines a population referenced in the song.
  */
-class Population : Concept
-{
+class Population : Concept {
 public:
-	/**
-	 * @brief A concept below the population.
-	 */
-	Concept below;
+    /**
+     * @brief A concept below the population.
+     */
+    Concept below;
 
-	/**
-	 * @brief A concept above the population.
-	 */
-	Concept above;
+    /**
+     * @brief A concept above the population.
+     */
+    Concept above;
 
-	Population(std::string name) : Concept(name), below("below", this), above("above", this) {}
+    Population(std::string name) : Concept(name), below("below", this), above("above", this) {}
 
-	/**
-	 * @brief An operation which is applied to a population.
-	 *
-	 * @tparam Func
-	 * @param operation
-	 */
-	template <typename Func>
-	void reduce(Func operation)
-	{
-		Concept symbol = Concept(std::string(operation()).compare("brothers") == 0 ? "brotherhood" : "");
-		Concept subject = Concept(this->compare("men") == 0 ? "man" : "");
-		lyrics << "A " << symbol << " of " << subject << "\n";
-	}
+    /**
+     * @brief An operation which is applied to a population.
+     *
+     * @tparam Func
+     * @param operation
+     */
+    template<typename Func>
+    void reduce(Func operation) {
+        Concept symbol = Concept(std::string(operation()).compare("brothers") == 0 ? "brotherhood" : "");
+        Concept subject = Concept(this->compare("men") == 0 ? "man" : "");
+        lyrics << "A " << symbol << " of " << subject << "\n";
+    }
 };
 
 /**
  * @brief Defines a list of reasons.
  */
-class Reasons
-{
+class Reasons {
 public:
-	int length;
+    int length;
 };
 
 /**
  * @brief Defines an action in the song.
  */
-class Action : Concept
-{
+class Action : Concept {
 public:
-	/**
-	 * @brief The list of reasons why this action is happening.
-	 */
-	Reasons reasons;
+    /**
+     * @brief The list of reasons why this action is happening.
+     */
+    Reasons reasons;
 
-	Action(std::string name) : Concept(name) {}
+    Action(std::string name) : Concept(name) {}
 
-	Action operator||(const Action &other)
-	{
-		if (this->reasons.length + other.reasons.length == 0)
-			lyrics << "Nothing to " << *this << " or " << other << " for"
-				   << "\n";
+    Action operator||(const Action &other) {
+        if (this->reasons.length + other.reasons.length == 0)
+            lyrics << "Nothing to " << *this << " or " << other << " for"
+                   << "\n";
 
-		return *this;
-	}
+        return *this;
+    }
 };
 
 /**
@@ -213,23 +199,22 @@ public:
  * @param possibility
  * @return Concept
  */
-Concept imagine(Concept possibility)
-{
-	lyrics << "\033[33m# Verse " << ++verse_counter << "\n"
-		   << "\033[0mImagine ";
+Concept imagine(Concept possibility) {
+    lyrics << "\033[33m# Verse " << ++verse_counter << "\n"
+           << "\033[0mImagine ";
 
-	if (possibility.compare("no heaven") == 0 || possibility.compare("no countries") == 0)
-		lyrics << "there's " << possibility;
-	else
-		lyrics << possibility;
+    if (possibility.compare("no heaven") == 0 || possibility.compare("no countries") == 0)
+        lyrics << "there's " << possibility;
+    else
+        lyrics << possibility;
 
-	lyrics << "\n";
+    lyrics << "\n";
 
-	if (possibility.compare("no possessions") == 0)
-		lyrics << "I wonder if you can"
-			   << "\n";
+    if (possibility.compare("no possessions") == 0)
+        lyrics << "I wonder if you can"
+               << "\n";
 
-	return Concept();
+    return Concept();
 }
 
 /**
@@ -237,30 +222,28 @@ Concept imagine(Concept possibility)
  *
  * @param action
  */
-void imagineAll(std::string action)
-{
-	lyrics << "Imagine all the people"
-		   << "\n"
-		   << action << "\n"
-		   << "\n";
+void imagineAll(std::string action) {
+    lyrics << "Imagine all the people"
+           << "\n"
+           << action << "\n"
+           << "\n";
 }
 
 /**
  * @brief The chorus, which comes in two slightly different versions.
  */
-void chorus()
-{
-	lyrics << "\033[33m# Chorus"
-		   << "\n"
-		   << "\033[0mYou may say I'm a dreamer"
-		   << "\n"
-		   << "But I'm not the only one"
-		   << "\n"
-		   << "I hope someday you'll join us"
-		   << "\n"
-		   << "And the world will " << (++chorus_counter == 1 ? "be" : "live") << " as one"
-		   << "\n"
-		   << "\n";
+void chorus() {
+    lyrics << "\033[33m# Chorus"
+           << "\n"
+           << "\033[0mYou may say I'm a dreamer"
+           << "\n"
+           << "But I'm not the only one"
+           << "\n"
+           << "I hope someday you'll join us"
+           << "\n"
+           << "And the world will " << (++chorus_counter == 1 ? "be" : "live") << " as one"
+           << "\n"
+           << "\n";
 }
 
 /**
@@ -269,14 +252,13 @@ void chorus()
  * @param concepts
  * @return bool
  */
-bool need(Concept concepts)
-{
-	bool needed = false;
+bool need(Concept concepts) {
+    bool needed = false;
 
-	if (!needed)
-		lyrics << "No need for " << concepts << "\n";
+    if (!needed)
+        lyrics << "No need for " << concepts << "\n";
 
-	return needed;
+    return needed;
 }
 
 #define Declare(Type, name) Type name(#name)
