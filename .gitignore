@@ -1,2 +1,5 @@
 tee-shirt-song
 *.o
+cmake*
+build
+.idea
