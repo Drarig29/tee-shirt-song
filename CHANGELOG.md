@@ -1,0 +1,3 @@
+- Colored output
+- Print with delay
+- Play a MIDI file when launched
