@@ -1,5 +1,7 @@
 # Tee-shirt song
 
+[![CMake](https://github.com/Drarig29/tee-shirt-song/actions/workflows/cmake.yml/badge.svg)](https://github.com/Drarig29/tee-shirt-song/actions/workflows/cmake.yml)
+
 You will also find a [C++ program](src/main.cpp) which runs the song! 😎
 
 The code below is actually implemented and programmatically outputs the lyrics, this is not hardcoded. The logic sits in a [separated file](src/logic.cpp).
