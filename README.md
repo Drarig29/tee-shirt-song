@@ -1,6 +1,6 @@
 # Tee-shirt song
 
-[![CMake](https://github.com/Drarig29/tee-shirt-song/actions/workflows/cmake.yml/badge.svg)](https://github.com/Drarig29/tee-shirt-song/actions/workflows/cmake.yml)
+[![Release](https://github.com/Drarig29/tee-shirt-song/actions/workflows/release.yml/badge.svg)](https://github.com/Drarig29/tee-shirt-song/actions/workflows/release.yml)
 
 You will also find a [C++ program](src/main.cpp) which runs the song! 😎
 
