@@ -1,4 +1,4 @@
-tee-shirt-song
+tee_shirt_song
 *.o
 cmake*
 build

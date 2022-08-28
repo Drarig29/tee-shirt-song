@@ -11,6 +11,14 @@ If VLC is installed on your computer, the MIDI file embedded in the code will be
 
 ![Demo of the executable](demo.gif)
 
+## Run it
+
+To run the program without compiling it, run the following:
+
+```bash
+curl -s https://drarig29.github.io/tee-shirt-song/run.sh | bash
+```
+
 ## Disclaimer
 
 I made this translation from a song's lyrics into source code with JavaScript in mind. But to actually implement it, I had to use a lower level language to overload operators, so I chose C++.
