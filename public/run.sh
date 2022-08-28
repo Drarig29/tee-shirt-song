@@ -1,5 +1,5 @@
 # Delete previous downloads
-rm tee_shirt_song*
+rm -f tee_shirt_song*
 
 # Download current release's artifact
 wget --quiet https://github.com/Drarig29/tee-shirt-song/releases/download/v1.0/tee_shirt_song
