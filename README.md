@@ -16,7 +16,7 @@ If VLC is installed on your computer, the MIDI file embedded in the code will be
 To run the program without compiling it, run the following:
 
 ```bash
-curl -s https://drarig29.github.io/tee-shirt-song/run.sh | bash
+bash <(curl -s https://drarig29.github.io/tee-shirt-song/run.sh)
 ```
 
 ## Disclaimer

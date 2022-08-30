@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Delete previous downloads
 rm -f tee_shirt_song*
 
