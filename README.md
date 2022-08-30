@@ -4,7 +4,7 @@
 
 You will also find a [C++ program](src/main.cpp) which runs the song! 😎
 
-The code below is actually implemented and programmatically outputs the lyrics, this is not hardcoded. The logic sits in a [separated file](src/logic.cpp).
+The code below is actually implemented and programmatically outputs the lyrics, this is not hardcoded. The logic sits in a [separated file](src/logic.hpp).
 
 If VLC is installed on your computer, the MIDI file embedded in the code will be played.
 **Note:**  On Linux, VLC requires the `vlc-plugin-fluidsynth` plugin to play MIDI files ([more info](https://wiki.videolan.org/Midi/)).
